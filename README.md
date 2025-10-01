@@ -1,0 +1,1 @@
+A simple project developing an options pricing library to help me develop numerical computing skills.
