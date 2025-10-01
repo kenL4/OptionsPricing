@@ -26,7 +26,9 @@ jobs:
         pip install pytest flake8
 
     - name: Run linter
-      run: run flake8 src
+      run: |
+        flake8 src
+        flake8 tests
 
     - name: Run tests
       run: pytest --maxfail=1 --disable-warnings -q
