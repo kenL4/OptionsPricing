@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import norm
+from scipy.optimize import fmin
 
 
 def call_price(S, K, T, r, sigma):
@@ -18,3 +19,27 @@ def put_price(S, K, T, r, sigma):
     d1 = (np.log((S/K)) + (r + sigma ** 2 / 2) * T) / (sigma * np.sqrt(T))
     d2 = d1 - sigma * np.sqrt(T)
     return K * np.exp(-r * T) * norm.cdf(-d2) - S * norm.cdf(-d1)
+
+
+def call_implied_volatility(S, K, T, r, market_price):
+    """
+    Solves for the root of the Black-Scholes equation
+    to find implied volatility
+    """
+    def f(sigma):
+        call = call_price(S, K, T, r, sigma)
+        return (call - market_price) ** 2
+
+    return fmin(f, x0=5, disp=False)[0]
+
+
+def put_implied_volatility(S, K, T, r, market_price):
+    """
+    Solves for the root of the Black-Scholes equation
+    to find implied volatility
+    """
+    def f(sigma):
+        put = put_price(S, K, T, r, sigma)
+        return (put - market_price) ** 2
+
+    return fmin(f, x0=5, disp=False)[0]
